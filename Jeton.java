@@ -6,16 +6,17 @@ public class Jeton {
     private String verso;
     private int numero;
 
+    public static void main(String[] args) {}
 
-    public static void main(String[] args){
+    public static List<String> tourJeton(){
         List<Jeton> listJeton = new ArrayList<>();
         Jeton jeton1 = new Jeton(1,"Holmes","Tirer carte alibi");
         Jeton jeton2 = new Jeton(2,"Tobby","Sherlock");
-        Jeton jeton3 = new Jeton(3,"Tourner  district 3","Echanger disctrict");
-        Jeton jeton4 = new Jeton(4,"Tourner  district 4","Avancer un des détectives");
+        Jeton jeton3 = new Jeton(3,"Tourner  district 1","Echanger disctrict");
+        Jeton jeton4 = new Jeton(4,"Tourner  district 2","Avancer un des détectives");
         List aa = new ArrayList<>();
         aa = Jeton.tirerJetons(jeton1, jeton2,jeton3,jeton4);
-        System.out.println(aa);
+        return aa;
     }
 
     public Jeton(int numero, String recto, String verso) {
@@ -25,7 +26,7 @@ public class Jeton {
     }
 
 
-    public static List tirerJetons(Jeton jeton1, Jeton jeton2, Jeton jeton3, Jeton jeton4){
+    private static List tirerJetons(Jeton jeton1, Jeton jeton2, Jeton jeton3, Jeton jeton4){
         List<String> facesFinal = new ArrayList<>();
         facesFinal.add(jeton1.tirerFace());
         facesFinal.add(jeton2.tirerFace());
@@ -35,7 +36,7 @@ public class Jeton {
     }
 
 
-    public String tirerFace(){
+    private String tirerFace(){
         Random random = new Random();
         int[] tmpList = new int[2];
         int finalValue = random.nextInt(tmpList.length);

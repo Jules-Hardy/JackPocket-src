@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Scanner;
+
 
 
 public class Game {
@@ -12,28 +14,46 @@ public class Game {
 
     // On initialise le plateau
     public void play() {
-        System.out.println("Bienvenue");
+
+        List<Player> listJoueur = Player.definePlayer();
+        Player joueur1 = listJoueur.get(0);
+        Player joueur2 = listJoueur.get(1);
+
         initialiseBoard();
         printBoard();
-        int tour = 0;
-/*
-        for(int i = 0; i<=8; i++){
-            if(tour %2 == 1){
-                joueur1 = "Enqueteur";
-                joueur2 = "MrJack";
-            }
-            else if(tour %2 != 1) {
-                joueur1 = "MrJack";
-                joueur2 = "Enqueteur";
-            }
-            else
-                System.out.println("erreur");
-            tour ++;
-        }
-*/
+
         if (visibleAlibis == null) visibleAlibis = new HashSet<>();
         visibleAlibis = updateVisibleAlibis();
         displayVisibleAlibis();
+
+        int nbTour = 1;
+        while (Math.max(joueur1.getNbSablier(), joueur2.getNbSablier()) < 8) {
+            System.out.println("Tour : "+nbTour);
+            System.out.println("On lance les jetons");
+            List<String> jetons = Jeton.tourJeton();
+            System.out.println("Voici les jetons tirés : "+jetons);
+            if(nbTour %2 == 1){
+                System.out.println("L'enqueteur commence. Que voulez vous faire ?\n");
+                String choice = choix(jetons);
+                jetons.remove(choice);
+                System.out.println("Voici les jetons restants : "+jetons);
+                System.out.println("C'est au tour de Mr Jack. Que voulez vous faire ?\n");
+                choice = choix(jetons);
+                jetons.remove(choice);
+                System.out.println("Voici les jetons restants : "+jetons);
+                System.out.println("C'est au tour de Mr Jack. Que voulez vous faire ?\n");
+                choice = choix(jetons);
+                jetons.remove(choice);
+                System.out.println("Voici les jetons restants : "+jetons);
+                System.out.println("C'est au tour de l'inspecteur. Que voulez vous faire ?\n");
+                choice = choix(jetons);
+            }
+            else if(nbTour %2 != 1) {
+
+            }
+            else System.out.println("erreur");
+            break;
+        }
     }
 
 
@@ -44,7 +64,7 @@ public class Game {
         List<District> districts = createDistrict();
         for (int i=0;i<5;i++){
             for (int j=0;j<5;j++){
-                // On ajoute les détéctives autour du plateau
+                // On ajoute les detectives autour du plateau
                 if (i==0){
                     board[i][j]=new Detective();
                 }
@@ -130,5 +150,42 @@ public class Game {
         for (Alibi alibi : visibleAlibis){
             System.out.println(alibi.toString());
         }
+    }
+
+    public static String choix(List<String> jetons){
+        Scanner scanner = new Scanner( System.in );
+        String choice = scanner.nextLine();
+        if(jetons.contains(choice)){
+            switch(choice){
+                case "Holmes":
+                    System.out.println("a");
+                    break;
+
+                case "Tobby":
+                    //
+                    break;
+
+                case "Sherlock":
+                    //
+                    break;
+
+                case "Tourner  district 1":
+                    //
+                    break;
+
+                case "Echanger disctrict":
+                    //
+                    break;
+
+                case "Tourner  district 2":
+                    //
+                    break;
+
+                case "Avancer un des détectives":
+                    //
+                    break;
+            }
+        }
+        return choice;
     }
 }
