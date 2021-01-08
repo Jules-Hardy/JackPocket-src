@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ public class Game {
 
     // On initialise le plateau
     public void play() {
+        System.out.println("Bienvenue");
         initialiseBoard();
         printBoard();
         createDistrict();
@@ -44,26 +46,33 @@ public class Game {
             for (int j=0;j<5;j++){
                 if (i==0){
                     board[i][j]=new Detective();
-                }else if(i==1){
+                }
+                else if(i==1){
                     if (j==0){
-                        Detective sherlock= new Detective("Shelock",i,j);
+                        Detective sherlock= new Detective("Sherlock",i,j);
                         detectives.add(sherlock);
                         board[i][j]=sherlock;
-                    }else if (j==4){
+                    }
+                    else if (j==4){
                         Detective watson = new Detective("Watson",i,j);
                         detectives.add(watson);
                         board[i][j]=watson;
-                    }else board[i][j]=districts.remove(0);
-                }else if(i==4){
+                    }
+                    else board[i][j]=districts.remove(0);
+                }
+                else if(i==4){
                     if(j==2){
                         Detective toby = new Detective("Toby",i,j);
                         detectives.add(toby);
                         board[i][j]=toby;
-                    }else board[i][j]=new Detective();
-                }else{
+                    }
+                    else board[i][j]=new Detective();
+                }
+                else{
                     if (j>0&&j<4){
                         board[i][j]=districts.remove(0);
-                    }else{
+                    }
+                    else{
                         board[i][j]=new Detective();
                     }
                 }
@@ -82,6 +91,7 @@ public class Game {
         districts.add(new District(new Alibi("Madame",2),generateRandomOrientation()));
         districts.add(new District(new Alibi("Sgt Goodley",0),generateRandomOrientation()));
         districts.add(new District(new Alibi("William Gull",1),generateRandomOrientation()));
+        districts.add(new District(new Alibi("DERNIER PERSO",1),generateRandomOrientation()));
         Collections.shuffle(districts);
         return districts;
     }
