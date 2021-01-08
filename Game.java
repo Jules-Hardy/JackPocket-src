@@ -19,7 +19,7 @@ public class Game {
         Player joueur1 = listJoueur.get(0);
         Player joueur2 = listJoueur.get(1);
 
-        initialiseBoard();
+        Tile board[][] = initialiseBoard();
         printBoard();
 
         if (visibleAlibis == null) visibleAlibis = new HashSet<>();
@@ -57,7 +57,7 @@ public class Game {
     }
 
 
-    private void initialiseBoard(){
+    private Tile[][] initialiseBoard(){
         if (board==null)board=new Tile[5][5];
         if (detectives==null)detectives=new ArrayList<>();
 
@@ -100,6 +100,7 @@ public class Game {
                 }
             }
         }
+        return board;
     }
 
 
@@ -152,13 +153,13 @@ public class Game {
         }
     }
 
-    public static String choix(List<String> jetons){
+    /*public static String choix(List<String> jetons, Tile board[][]){
         Scanner scanner = new Scanner( System.in );
         String choice = scanner.nextLine();
         if(jetons.contains(choice)){
             switch(choice){
                 case "Holmes":
-                    System.out.println("a");
+                    //;
                     break;
 
                 case "Tobby":
@@ -173,7 +174,7 @@ public class Game {
                     //
                     break;
 
-                case "Echanger disctrict":
+                case "Echanger district":
                     //
                     break;
 
@@ -186,6 +187,13 @@ public class Game {
                     break;
             }
         }
+        else {
+            System.out.println("Votre choix n'est pas valable");
+            choix(jetons);
+
+        }
         return choice;
     }
+
+     */
 }

@@ -12,7 +12,7 @@ public class Jeton {
         List<Jeton> listJeton = new ArrayList<>();
         Jeton jeton1 = new Jeton(1,"Holmes","Tirer carte alibi");
         Jeton jeton2 = new Jeton(2,"Tobby","Sherlock");
-        Jeton jeton3 = new Jeton(3,"Tourner  district 1","Echanger disctrict");
+        Jeton jeton3 = new Jeton(3,"Tourner  district 1","Echanger disctrit");
         Jeton jeton4 = new Jeton(4,"Tourner  district 2","Avancer un des détectives");
         List aa = new ArrayList<>();
         aa = Jeton.tirerJetons(jeton1, jeton2,jeton3,jeton4);
