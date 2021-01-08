@@ -9,7 +9,7 @@ public class Jeton {
 
     public static void main(String[] args){
         List<Jeton> listJeton = new ArrayList<>();
-        Jeton jeton1 = new Jeton(1,"Holmes","Tirer carte alibi");
+        Jeton jeton1 = new Jeton(1,"Holmes","Tirer carte alibi");s
         Jeton jeton2 = new Jeton(2,"Tobby","Sherlock");
         Jeton jeton3 = new Jeton(3,"Tourner  district 3","Echanger disctrict");
         Jeton jeton4 = new Jeton(4,"Tourner  district 4","Avancer un des détectives");
