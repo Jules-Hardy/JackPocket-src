@@ -3,11 +3,8 @@ public class District extends Tile {
     private Alibi alibi;
     private boolean north, east, south, west;
 
-    public District(Alibi william_gull, List<Boolean> generateRandomOrientation) {
-        super();
-    }
 
-    public void Disctrict(Alibi alibi, List<Boolean> orientation){
+    public District(Alibi alibi, List<Boolean> orientation){
         this.alibi = alibi;
         this.north = orientation.get(0);
         this.east = orientation.get(1);
@@ -39,11 +36,12 @@ public class District extends Tile {
 
     @Override
     public String toString(){
-        String s = alibi.toString();
-        if(isWest()) s+="<";
-        if(isNorth()) s+="^";
-        if(isSouth()) s+="v";
-        if(isEast()) s+=">";
+        String s;
+        s = this.alibi.toString();
+        if(this.isWest()) s+="<";
+        if(this.isNorth()) s+="^";
+        if(this.isSouth()) s+="v";
+        if(this.isEast()) s+=">";
         return s;
     }
 

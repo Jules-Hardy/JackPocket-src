@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+
 public class Game {
     private Tile[][] board ;
     private List<Detective> detectives;
@@ -14,7 +15,6 @@ public class Game {
         System.out.println("Bienvenue");
         initialiseBoard();
         printBoard();
-        createDistrict();
         int tour = 0;
 /*
         for(int i = 0; i<=8; i++){
@@ -44,6 +44,7 @@ public class Game {
         List<District> districts = createDistrict();
         for (int i=0;i<5;i++){
             for (int j=0;j<5;j++){
+                // On ajoute les détéctives autour du plateau
                 if (i==0){
                     board[i][j]=new Detective();
                 }
@@ -68,7 +69,8 @@ public class Game {
                     }
                     else board[i][j]=new Detective();
                 }
-                else{
+                else
+                    {
                     if (j>0&&j<4){
                         board[i][j]=districts.remove(0);
                     }
@@ -94,6 +96,7 @@ public class Game {
         districts.add(new District(new Alibi("DERNIER PERSO",1),generateRandomOrientation()));
         Collections.shuffle(districts);
         return districts;
+
     }
 
     private List<Boolean> generateRandomOrientation(){
