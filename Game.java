@@ -34,19 +34,19 @@ public class Game {
             System.out.println("Voici les jetons tirés : "+jetons);
             if(nbTour %2 == 1){
                 System.out.println("L'enqueteur commence. Que voulez vous faire ?\n");
-                String choice = choix(jetons);
+                String choice = choix(jetons, board);
                 jetons.remove(choice);
                 System.out.println("Voici les jetons restants : "+jetons);
                 System.out.println("C'est au tour de Mr Jack. Que voulez vous faire ?\n");
-                choice = choix(jetons);
+                choice = choix(jetons, board);
                 jetons.remove(choice);
                 System.out.println("Voici les jetons restants : "+jetons);
                 System.out.println("C'est au tour de Mr Jack. Que voulez vous faire ?\n");
-                choice = choix(jetons);
+                choice = choix(jetons, board);
                 jetons.remove(choice);
                 System.out.println("Voici les jetons restants : "+jetons);
                 System.out.println("C'est au tour de l'inspecteur. Que voulez vous faire ?\n");
-                choice = choix(jetons);
+                choice = choix(jetons, board);
             }
             else if(nbTour %2 != 1) {
 
@@ -153,7 +153,7 @@ public class Game {
         }
     }
 
-    /*public static String choix(List<String> jetons, Tile board[][]){
+    public static String choix(List<String> jetons, Tile board[][]){
         Scanner scanner = new Scanner( System.in );
         String choice = scanner.nextLine();
         if(jetons.contains(choice)){
@@ -189,11 +189,9 @@ public class Game {
         }
         else {
             System.out.println("Votre choix n'est pas valable");
-            choix(jetons);
+            choix(jetons, board);
 
         }
         return choice;
     }
-
-     */
 }
