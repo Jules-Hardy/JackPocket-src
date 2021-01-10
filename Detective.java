@@ -30,9 +30,25 @@ public class Detective extends Tile {
 
 
     public void move(int steps){
+        List position = new ArrayList();
         if(getRow() == 1) {
             setRow(1);
         }
+        int i = 0;
+        int j = 4;
+        setColumn(i);
+        setRow(j);
+    }
+
+    public  boolean isCorrectPosition() {
+        boolean output = true;
+        int i = this.getColumn();
+        int j = this.getRow();
+        if ((this.getColumn() == 0 || i == 4) && (j == 0 || j == 4))
+            output = true;
+        else
+            output = false;
+        return output;
     }
 
     public List<Alibi> seeAlibis(Tile[][] board){

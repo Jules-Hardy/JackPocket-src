@@ -32,7 +32,12 @@ public class District extends Tile {
         return west;
     }
 
-    public void move(){}
+    public void move(int value){
+        if(north == false){
+
+        }
+
+    }
 
     public static void exchange(District districtChoiced1, District districtChoiced2){
 

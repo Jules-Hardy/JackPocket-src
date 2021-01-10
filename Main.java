@@ -4,7 +4,7 @@ public class Main {
     static Deque<Alibi> alibis;
     public static void main(String[] args){
         Game game = new Game();
-        game.play();
+        Player winner = game.play();
     }
 
     private static void initialiseAlibis(){

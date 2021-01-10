@@ -10,9 +10,9 @@ public class Jeton {
 
     public static List<String> tourJeton(){
         List<Jeton> listJeton = new ArrayList<>();
-        Jeton jeton1 = new Jeton(1,"Holmes","Tirer carte alibi");
-        Jeton jeton2 = new Jeton(2,"Tobby","Sherlock");
-        Jeton jeton3 = new Jeton(3,"Tourner  district 1","Echanger disctrit");
+        Jeton jeton1 = new Jeton(1,"Sherlock","Tirer carte alibi");
+        Jeton jeton2 = new Jeton(2,"Tobby","Watson");
+        Jeton jeton3 = new Jeton(3,"Tourner  district 1","Echanger district");
         Jeton jeton4 = new Jeton(4,"Tourner  district 2","Avancer un des détectives");
         List aa = new ArrayList<>();
         aa = Jeton.tirerJetons(jeton1, jeton2,jeton3,jeton4);

@@ -16,9 +16,9 @@ public class Player {
     }
 
     public static List<Player> definePlayer(){
+        System.out.println("\t Bienvenue,\nAvant de commencer une partie, vueillez choisir quel personne vous voulez jouer...");
         List<Player> listJoueur = new ArrayList<>();
         Scanner scanner = new Scanner( System.in );
-        System.out.println("Entrez 1 pour que joueur 1 soit MrJack, ou 2 pour l'enquêteur --> ");
         System.out.println("Joueur1 est MrJack. Entrez votre pseudo --> ");
         Player mrJack = new Player(scanner.nextLine(), "MrJack", 0);
         System.out.println("Joueur2 est l'inspecteur. Entrez votre pseudo --> ");
