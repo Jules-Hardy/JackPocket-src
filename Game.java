@@ -1,4 +1,3 @@
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,8 +15,8 @@ public class Game {
     public void play() {
 
         List<Player> listJoueur = Player.definePlayer();
-        Player joueur1 = listJoueur.get(0);
-        Player joueur2 = listJoueur.get(1);
+        Player mrJack = listJoueur.get(0);
+        Player enqueteur = listJoueur.get(1);
 
         Tile board[][] = initialiseBoard();
         printBoard();
@@ -27,26 +26,30 @@ public class Game {
         displayVisibleAlibis();
 
         int nbTour = 1;
-        while (Math.max(joueur1.getNbSablier(), joueur2.getNbSablier()) < 8) {
+        while (Math.max(mrJack.getNbSablier(), enqueteur.getNbSablier()) < 8) {
             System.out.println("Tour : "+nbTour);
             System.out.println("On lance les jetons");
             List<String> jetons = Jeton.tourJeton();
             System.out.println("Voici les jetons tirés : "+jetons);
             if(nbTour %2 == 1){
                 System.out.println("L'enqueteur commence. Que voulez vous faire ?\n");
-                String choice = choix(jetons, board);
+                Player currentPlayer = enqueteur;
+                String choice = choix(jetons, board, currentPlayer, detectives, districts);
                 jetons.remove(choice);
                 System.out.println("Voici les jetons restants : "+jetons);
                 System.out.println("C'est au tour de Mr Jack. Que voulez vous faire ?\n");
-                choice = choix(jetons, board);
+                currentPlayer = mrJack;
+                choice = choix(jetons, board, currentPlayer, detectives);
                 jetons.remove(choice);
                 System.out.println("Voici les jetons restants : "+jetons);
                 System.out.println("C'est au tour de Mr Jack. Que voulez vous faire ?\n");
-                choice = choix(jetons, board);
+                currentPlayer = mrJack;
+                choice = choix(jetons, board, currentPlayer, detectives);
                 jetons.remove(choice);
                 System.out.println("Voici les jetons restants : "+jetons);
                 System.out.println("C'est au tour de l'inspecteur. Que voulez vous faire ?\n");
-                choice = choix(jetons, board);
+                currentPlayer = mrJack;
+                choice = choix(jetons, board, currentPlayer, detectives);
             }
             else if(nbTour %2 != 1) {
 
@@ -120,7 +123,7 @@ public class Game {
 
     }
 
-    private List<Boolean> generateRandomOrientation(){
+    private static List<Boolean> generateRandomOrientation(){
         List<Boolean> orientation = new ArrayList<>();
         orientation.add(true);
         orientation.add(true);
@@ -153,29 +156,48 @@ public class Game {
         }
     }
 
-    public static String choix(List<String> jetons, Tile board[][]){
+    public static String choix(List<String> jetons, Tile board[][], Player currentPlayer, List detectives, District districts){
         Scanner scanner = new Scanner( System.in );
         String choice = scanner.nextLine();
         if(jetons.contains(choice)){
+            Detective sherlock = (Detective) detectives.get(0);
+            Detective watson = (Detective) detectives.get(1);
+            Detective tobby = (Detective) detectives.get(2);
             switch(choice){
                 case "Holmes":
-                    //;
+                    System.out.println("De combien de case voulez vous bouger Holmes ? 1 ou 2 ?");
+                    int input = scanner.nextInt();
+                    sherlock.move(input);
                     break;
 
                 case "Tobby":
-                    //
+                    System.out.println("De combien de case voulez vous bouger Tobby ? 1 ou 2 ?");
+                    input = scanner.nextInt();
+                    tobby.move(input);
                     break;
 
                 case "Sherlock":
-                    //
+                    System.out.println("De combien de case voulez vous bouger Sherlock ? 1 ou 2 ?");
+                    input = scanner.nextInt();
+                    sherlock.move(input);
                     break;
 
                 case "Tourner  district 1":
-                    //
+                    System.out.println("Quel district voulez vous tourner ?");
+                    Alibi alibiChoiced = new Alibi("ss", 2);
+                    District districtChoiced = new District(alibiChoiced, generateRandomOrientation());
+                    districtChoiced.move();
+                    currentPlayer.addSablier(alibiChoiced.getHourglassCount());
                     break;
 
                 case "Echanger district":
-                    //
+                    System.out.println("Quels districts voulez vous échanger ?");
+                    Alibi alibiChoiced1 = new Alibi("Alibi1", 2);
+                    District districtChoiced1 = new District(alibiChoiced1, generateRandomOrientation());
+                    Alibi alibiChoiced2 = new Alibi("Alibi2", 2);
+                    District districtChoiced2 = new District(alibiChoiced2, generateRandomOrientation());
+
+                    District.exchange(districtChoiced1, districtChoiced2);
                     break;
 
                 case "Tourner  district 2":
@@ -183,13 +205,22 @@ public class Game {
                     break;
 
                 case "Avancer un des détectives":
-                    //
+                    System.out.println("Quel joueur voulez vous avancer de 1 case ?");
+                    String ins = scanner.nextLine();
+                    if(ins=="Sherlock"){ sherlock.move(1);}
+                    if(ins=="Tobby"){ tobby.move(1);}
+                    if(ins=="Watson"){ watson.move(1);}
                     break;
+
+                case "Tirer carte alibi":
+
+                    break;
+
             }
         }
         else {
             System.out.println("Votre choix n'est pas valable");
-            choix(jetons, board);
+            choix(jetons, board, currentPlayer, detectives);
 
         }
         return choice;

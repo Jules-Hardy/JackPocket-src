@@ -32,6 +32,12 @@ public class District extends Tile {
         return west;
     }
 
+    public void move(){}
+
+    public static void exchange(District districtChoiced1, District districtChoiced2){
+
+    }
+
     @Override
     public String toString(){
         String s;

@@ -19,25 +19,12 @@ public class Player {
         List<Player> listJoueur = new ArrayList<>();
         Scanner scanner = new Scanner( System.in );
         System.out.println("Entrez 1 pour que joueur 1 soit MrJack, ou 2 pour l'enquêteur --> ");
-        int input = scanner.nextInt();
-        if(input==1){
-            System.out.println("Joueur1 est MrJack. Entrez votre pseudo --> ");
-            scanner.nextLine();
-            Player joueur1 = new Player(scanner.nextLine(), "MrJack", 0);
-            System.out.println("Joueur2 est l'inspecteur. Entrez votre pseudo --> ");
-            Player joueur2 = new Player(scanner.nextLine(), "Enqueteur", 0);
-            listJoueur.add(joueur1);
-            listJoueur.add(joueur2);
-        }
-        else {
-            System.out.println("Joueur1 est l'enquêteur.\nEntrez votre pseudo --> ");
-            scanner.nextLine();
-            Player joueur1 = new Player(scanner.nextLine(), "Enqueteur", 0);
-            System.out.println("Joueur2 est MrJack.\nEntrez votre pseudo --> ");
-            Player joueur2 = new Player(scanner.nextLine(), "MrJack", 0);
-            listJoueur.add(joueur1);
-            listJoueur.add(joueur2);
-        }
+        System.out.println("Joueur1 est MrJack. Entrez votre pseudo --> ");
+        Player mrJack = new Player(scanner.nextLine(), "MrJack", 0);
+        System.out.println("Joueur2 est l'inspecteur. Entrez votre pseudo --> ");
+        Player enqueteur = new Player(scanner.nextLine(), "Enqueteur", 0);
+        listJoueur.add(mrJack);
+        listJoueur.add(enqueteur);
         return listJoueur;
     }
 
@@ -52,6 +39,10 @@ public class Player {
 
     public int getNbSablier(){
         return nbSablier;
+    }
+
+    public void addSablier(int number){
+        this.nbSablier = nbSablier + number;
     }
 
     public void setSablier(int nbSablier) {

@@ -9,6 +9,9 @@ public class Alibi {
         this.hourglassCount=hourglassCount;
     }
 
+    public int getHourglassCount(){ return hourglassCount;}
+
+
     @Override
     public String toString(){
         return name;

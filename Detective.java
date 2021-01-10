@@ -19,8 +19,20 @@ public class Detective extends Tile {
     public String getName(){
         return name;
     }
+    public int getRow(){
+        return row;
+    }
+    public int getColumn(){
+        return column;
+    }
+    public void setRow(int row){this.row = row; }
+    public void setColumn(int column){this.column = column; }
+
 
     public void move(int steps){
+        if(getRow() == 1) {
+            setRow(1);
+        }
     }
 
     public List<Alibi> seeAlibis(Tile[][] board){
