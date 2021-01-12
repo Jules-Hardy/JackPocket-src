@@ -6,14 +6,35 @@ public class Detective extends Tile {
     private String name;
     private int row;
     private int column;
+    private int pos;
 
-    public Detective(String name,int row, int column){
+    public Detective(String name, int pos){
         this.name=name;
-        this.row=row;
-        this.column=column;
+        setPos(pos);
     }
 
-    public Detective(){
+    public Detective() {
+
+    }
+
+    public void setPos(int n) {
+        this.pos=n;
+        if(n<=3){
+            this.setColumn(0);
+            this.setRow(n);
+        }
+        else if(n<=6){
+            this.setColumn(n-3);
+            this.setRow(4);
+        }
+        else if(n<=9){
+            this.setColumn(4);
+            this.setRow(10-n);
+        }
+        else if(n<=12){
+            this.setColumn(13-n);
+            this.setRow(0);
+        }
     }
 
     public String getName(){
@@ -25,20 +46,10 @@ public class Detective extends Tile {
     public int getColumn(){
         return column;
     }
+    public int getPos(){ return pos;}
     public void setRow(int row){this.row = row; }
     public void setColumn(int column){this.column = column; }
 
-
-    public void move(int steps){
-        List position = new ArrayList();
-        if(getRow() == 1) {
-            setRow(1);
-        }
-        int i = 0;
-        int j = 4;
-        setColumn(i);
-        setRow(j);
-    }
 
     public  boolean isCorrectPosition() {
         boolean output = true;
