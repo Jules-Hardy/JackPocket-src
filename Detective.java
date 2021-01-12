@@ -51,17 +51,6 @@ public class Detective extends Tile {
     public void setColumn(int column){this.column = column; }
 
 
-    public  boolean isCorrectPosition() {
-        boolean output = true;
-        int i = this.getColumn();
-        int j = this.getRow();
-        if ((this.getColumn() == 0 || i == 4) && (j == 0 || j == 4))
-            output = true;
-        else
-            output = false;
-        return output;
-    }
-
     public List<Alibi> seeAlibis(Tile[][] board){
         List<Alibi> visibleAlibis=new ArrayList<>();
         int nextAlibi=1;

@@ -1,7 +1,4 @@
-
 import java.util.*;
-
-
 
 public class Game {
     private Tile[][] board ;
@@ -19,10 +16,16 @@ public class Game {
 
         if (visibleAlibis == null) visibleAlibis = new HashSet<>();
 
-
         int nbTour = 1;
         Player winner = null;
-        while (Math.max(mrJack.getNbSablier(), enqueteur.getNbSablier()) < 6 && nbTour < 8) {
+        for(int i=0;i<4 && i>1;i++){
+            for(int j=0;j<4 && j>1;j++){
+                board[i][j].
+            }
+        }
+
+
+            while (Math.max(mrJack.getNbSablier(), enqueteur.getNbSablier()) < 6 && nbTour < 8) {
 
             this.visibleAlibis = updateVisibleAlibis();
             displayVisibleAlibis();
@@ -100,7 +103,6 @@ public class Game {
     private Tile[][] initialiseBoard(){
         if (board==null)board=new Tile[5][5];
         //if (detectives==null)detectives=new ArrayList<>();
-
         List<District> districts = createDistrict();
 
         for (int i=0;i<5;i++) {
@@ -123,7 +125,6 @@ public class Game {
                 this.board[i][j] = districts.remove(0);
             }
         }
-
         return board;
     }
 
