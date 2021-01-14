@@ -16,6 +16,15 @@ public class District extends Tile {
         getOrientation(orientation);
     }
 
+
+
+    public void rotate(int n){
+        for(int i=1; 1 < n; i++){
+            this.orientationN = (this.orientationN + 1) % 4;
+        }
+        this.orientation = orientations[this.orientationN - 1];
+    }
+
     public Alibi getAlibi() {
         return alibi;
     }
@@ -64,10 +73,7 @@ public class District extends Tile {
     }
 
 
-    public void rotate(int value) {
 
-
-    }
 
     public static void exchange(District districtChoiced1, District districtChoiced2) {
 
