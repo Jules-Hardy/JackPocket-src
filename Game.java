@@ -12,13 +12,24 @@ public class Game {
         Player mrJack = listJoueur.get(0);
         Player enqueteur = listJoueur.get(1);
 
-        Tile board[][] = initialiseBoard();
+        List<District> districts = createDistrict();
+        List<District> districtsAlibi = new ArrayList<>(districts);
+        Tile board[][] = initialiseBoard(districts);
+
+        for(int x=0; x<districtsAlibi.size(); x++){
+            if(districtsAlibi.get(x).getAlibi().getMrJack())
+                System.out.println("MrJack a pioché l'alibi suivant : "+districtsAlibi.get(x).getAlibi().getName());
+        }
 
         if (visibleAlibis == null) visibleAlibis = new HashSet<>();
 
         int nbTour = 1;
         Player winner = null;
-
+        printBoard();
+        System.out.println(board[3][3].getDistrict().getOrientations());
+        this.board[3][3].getDistrict().rotate(1);
+        System.out.println(board[3][3].getDistrict().getOrientations());
+        printBoard();
 
         while (Math.max(mrJack.getNbSablier(), enqueteur.getNbSablier()) < 6 && nbTour < 8) {
 
@@ -29,8 +40,11 @@ public class Game {
             Player currentPlayer = enqueteur;
             List<String> jetons = new ArrayList<>();
             jetons.add("Echanger district");
+            jetons.add("Tirer carte alibi");
+            jetons.add("Tourner  district 1");
+            jetons.add("Tirer carte alibi");
             System.out.println(jetons);
-            choix(jetons, board, currentPlayer, detectives);
+            choix(jetons, board, currentPlayer, detectives, districtsAlibi);
 
             // DEBUT DE TOUR ET CHOIX DES ACTIONS
             System.out.println("-------- Début du tour : "+nbTour+" --------\n"+"\tRésumé des scores : \n" + "- "+mrJack.getName()+" (mrJack) : "+mrJack.getNbSablier()+ "\n- "+enqueteur.getName()+" (Enqueteur) : "+enqueteur.getNbSablier()+"\n");
@@ -42,23 +56,23 @@ public class Game {
                 while(true){
                     System.out.println("L'enqueteur commence. Que voulez vous faire ?\n"+enqueteur.getName()+" -->");
                     //Player currentPlayer = enqueteur;
-                    String choice = choix(jetons, board, currentPlayer, detectives);
+                    String choice = choix(jetons, board, currentPlayer, detectives, districtsAlibi);
                     jetons.remove(choice);
                     printBoard();
                     System.out.println("Voici les jetons restants : "+jetons);
                     System.out.println("C'est au tour de Mr Jack. Que voulez vous faire ?\n"+mrJack.getName()+" -->");
                     currentPlayer = mrJack;
-                    choice = choix(jetons, board, currentPlayer, detectives);
+                    choice = choix(jetons, board, currentPlayer, detectives, districts);
                     jetons.remove(choice);
                     System.out.println("Voici les jetons restants : "+jetons);
                     System.out.println("C'est au tour de Mr Jack. Que voulez vous faire ?\n"+mrJack.getName()+" -->");
                     currentPlayer = mrJack;
-                    choice = choix(jetons, board, currentPlayer, detectives);
+                    choice = choix(jetons, board, currentPlayer, detectives, districts);
                     jetons.remove(choice);
                     System.out.println("Voici les jetons restants : "+jetons);
                     System.out.println("C'est au tour de l'inspecteur. Que voulez vous faire ?\n"+enqueteur.getName()+" -->");
                     currentPlayer = mrJack;
-                    choice = choix(jetons, board, currentPlayer, detectives);
+                    choice = choix(jetons, board, currentPlayer, detectives, districts);
                     break;
                 }
 
@@ -106,11 +120,9 @@ public class Game {
     }
 
 
-    private Tile[][] initialiseBoard(){
+    private Tile[][] initialiseBoard(List<District> districts){
         if (board==null)board=new Tile[5][5];
         //if (detectives==null)detectives=new ArrayList<>();
-        List<District> districts = createDistrict();
-
         for (int i=0;i<5;i++) {
             for (int j = 0; j < 5; j++) {
                 this.board[i][j] = new EmptyTile();
@@ -130,14 +142,13 @@ public class Game {
                 this.board[i][j] = districts.remove(0);
             }
         }
-
         return board;
     }
 
 
     private List<District> createDistrict(){
         List<District> districts = new ArrayList<>();
-        String[] names = {"Inspecteur Lestrade", "Miss Stealthy", "Jeremy Bert", "John Pizer","Joseph Lane","Madame", "Sergent Goodley", "William Gull", "Dernir perso"};
+        String[] names = {"Inspecteur Lestrade", "Miss Stealthy", "Jeremy Bert", "John Pizer","Joseph Lane","Madame", "Sergent Goodley", "William Gull", "Dernier perso"};
         Random rand = new Random();
         int randomNum = rand.nextInt(names.length);
         for(int i=0; i<names.length;i++){
@@ -148,7 +159,6 @@ public class Game {
         }
         Collections.shuffle(districts);
         return districts;
-
     }
 
 
@@ -178,6 +188,7 @@ public class Game {
         return visibleAlibis;
     }
 
+
     private void displayVisibleAlibis(){
         System.out.println("Voici les personnes visibles par l'enqueteur :");
         for (Alibi alibi : visibleAlibis){
@@ -185,13 +196,13 @@ public class Game {
         }
     }
 
-    private String choix(List<String> jetons, Tile board[][], Player currentPlayer, Detective[] detectives){
+    private String choix(List<String> jetons, Tile[][] board, Player currentPlayer, Detective[] detectives, List<District> districtsAlibi){
         Scanner scanner = new Scanner( System.in );
         String choice = scanner.nextLine();
         if(jetons.contains(choice)){
-            Detective sherlock = (Detective) detectives[0];
-            Detective watson = (Detective) detectives[2];
-            Detective tobby = (Detective) detectives[1];
+            Detective sherlock = detectives[0];
+            Detective watson = detectives[2];
+            Detective tobby = detectives[1];
             switch(choice){
                 case "Sherlock":
                     System.out.println("De combien de case voulez vous bouger Sherlock ? 1 ou 2 ?");
@@ -213,30 +224,38 @@ public class Game {
 
                 case "Tourner  district 1":
                     System.out.println("Quel district voulez vous tourner ?");
-
+                    int i, y, step;
+                    System.out.println("Entrez l'abscisse du district à tourner :\n-->");
+                    i = scanner.nextInt() - 1;
+                    System.out.println("Entrez l'ordonnée du district à tourner : \n-->");
+                    y = scanner.nextInt() - 1;
+                    System.out.println("Souhaitez vous tourner le district 1 fois ou 2 fois ? (entrez 1 ou 2) \n-->");
+                    step = scanner.nextInt();
+                    System.out.println(board[i][y].getDistrict().getOrientations());
+                    this.board[i][y].getDistrict().rotate(2);
+                    System.out.println(board[i][y].getDistrict().getOrientations());
                     break;
 
                 case "Echanger district":
                     int i1, i2, y1, y2;
                     while(true) {
                         System.out.println("Entrez l'abscisse du 1 er district à échanger :\n-->");
-                        i1 = scanner.nextInt() + 1;
+                        i1 = scanner.nextInt() - 1 ;
                         System.out.println("Entrez l'ordonnée du 1 er district à échanger : \n-->");
-                        y1 = scanner.nextInt() + 1;
+                        y1 = scanner.nextInt() - 1;
                         System.out.println("Entrez l'abscisse du 2 ème district à échanger :\n-->");
-                        i2 = scanner.nextInt() + 1;
+                        i2 = scanner.nextInt() - 1;
                         System.out.println("Entrez l'ordonnée du 2 ème district à échanger : \n-->");
-                        y2 = scanner.nextInt() + 1;
+                        y2 = scanner.nextInt() - 1;
                         System.out.println("Voulez vous échanger "+board[i1][y1].toString()+" avec "+board[i2][y2].toString()+" ?");
-                        String in = scanner.nextLine();
-                        if(in.equals("oui")){break;}
-
+                        //String in = scanner.nextLine();
+                        //if(in.equals("oui")){break;}
                     }
-                    Tile tmp = null;
-                    tmp = this.board[i1][y1];
-                    this.board[i1][y1] = this.board[i2][y2];
-                    this.board[i2][y2] = tmp;
-                    break;
+                    //Tile tmp = null;
+                    //tmp = this.board[i1][y1];
+                    //this.board[i1][y1] = this.board[i2][y2];
+                    //this.board[i2][y2] = tmp;
+                    //break;
 
                 case "Tourner  district 2":
                     //
@@ -255,9 +274,19 @@ public class Game {
                     }
 
                 case "Tirer carte alibi":
-                    Alibi alibiChoiced = new Alibi("ss", 2);
-                    //districtChoiced.move();
-                    currentPlayer.addSablier(alibiChoiced.getHourglassCount());
+                    Random rand = new Random();
+                    Alibi pickedAlibi;
+                    System.out.println(districtsAlibi.size());
+                    while(true){
+                        int randomNum = rand.nextInt(districtsAlibi.size());
+                        if(!districtsAlibi.get(randomNum).getAlibi().getMrJack()){
+                            pickedAlibi = districtsAlibi.get(randomNum).getAlibi();
+                            districtsAlibi.remove(randomNum);
+                            currentPlayer.addSablier(pickedAlibi.getHourglassCount());
+                            System.out.println("Alibi pioché : "+ pickedAlibi.toString());
+                            break;
+                        }
+                    }
                     break;
             }
             printBoard();
@@ -265,13 +294,13 @@ public class Game {
 
         else {
             System.out.println("Votre choix n'est pas valable, voici les choix proposés : "+jetons);
-            choix(jetons, board, currentPlayer, detectives);
+            choix(jetons, board, currentPlayer, detectives, districtsAlibi);
         }
         return choice;
     }
 
     private void move(Detective d, int step){
-        board[d.getColumn()][d.getRow()] = new EmptyTile();
+        this.board[d.getColumn()][d.getRow()] = new EmptyTile();
         int pos = d.getPos()+step;
         if(pos==13){pos=1;}
         placeDetective(d, pos);

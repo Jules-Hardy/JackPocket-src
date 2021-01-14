@@ -16,13 +16,12 @@ public class District extends Tile {
         getOrientation(orientation);
     }
 
-
-
     public void rotate(int n){
-        for(int i=1; 1 < n; i++){
+        for(int i = 0; i < n-1; i++) {
             this.orientationN = (this.orientationN + 1) % 4;
         }
         this.orientation = orientations[this.orientationN - 1];
+        getOrientation(orientation);
     }
 
     public Alibi getAlibi() {
@@ -44,6 +43,8 @@ public class District extends Tile {
     public boolean isWest() {
         return west;
     }
+
+    public char getOrientations(){return orientation;}
 
     private void getOrientation(char orientation) {
         switch (orientation) {
@@ -72,21 +73,14 @@ public class District extends Tile {
         }
     }
 
-
-
-
-    public static void exchange(District districtChoiced1, District districtChoiced2) {
-
-    }
-
     @Override
     public String toString() {
         String s;
         s = this.alibi.toString();
-        if (this.isWest()) s += "<";
-        if (this.isNorth()) s += "^";
-        if (this.isSouth()) s += "v";
-        if (this.isEast()) s += ">";
+        if (!this.isWest()) s += "╠";
+        if (!this.isNorth()) s += "╦";
+        if (!this.isSouth()) s += "╩";
+        if (!this.isEast()) s += "╣";
         return s;
     }
 

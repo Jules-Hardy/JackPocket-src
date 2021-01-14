@@ -19,7 +19,7 @@ public class Jeton {
         return aa;
     }
 
-    public Jeton(int numero, String recto, String verso) {
+    private Jeton(int numero, String recto, String verso) {
         this.numero=numero;
         this.recto =recto;
         this.verso =verso;
