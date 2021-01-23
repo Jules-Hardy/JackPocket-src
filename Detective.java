@@ -20,20 +20,20 @@ public class Detective extends Tile {
     public void setPos(int n) {
         this.pos=n;
         if(n<=3){
-            this.setColumn(0);
-            this.setRow(n);
+            this.setColumn(n);
+            this.setRow(0);
         }
         else if(n<=6){
-            this.setColumn(n-3);
-            this.setRow(4);
+            this.setColumn(4);
+            this.setRow(n-3);
         }
         else if(n<=9){
-            this.setColumn(4);
-            this.setRow(10-n);
+            this.setColumn(10-n);
+            this.setRow(4);
         }
         else if(n<=12){
-            this.setColumn(13-n);
-            this.setRow(0);
+            this.setColumn(0);
+            this.setRow(13-n);
         }
     }
 
@@ -51,64 +51,7 @@ public class Detective extends Tile {
     public void setColumn(int column){this.column = column; }
 
 
-    public List<Alibi> seeAlibis(Tile[][] board){
-        List<Alibi> visibleAlibis=new ArrayList<>();
-        int nextAlibi=1;
-        if (row==0){
-            if (((District) board[row+nextAlibi][column]).isNorth()){
-                District district = (District) board[row + nextAlibi][column];
-                visibleAlibis.add(district.getAlibi());
-                while (district.isSouth()&&nextAlibi<3){
-                    nextAlibi++;
-                    District nextDistrict=(District) board[row+nextAlibi][column];
-                    if (nextDistrict.isNorth()){
-                        visibleAlibis.add(nextDistrict.getAlibi());
-                        district=nextDistrict;
-                    }
-                }
-            }
-        }else if (row==4){
-            if (((District)board[row-nextAlibi][column]).isSouth()){
-                District district=(District)board[row-nextAlibi][column];
-                visibleAlibis.add(district.getAlibi());
-                while(district.isNorth()&&nextAlibi<3){
-                    nextAlibi++;
-                    District nextDistrict = (District) board[row-nextAlibi][column];
-                    if (nextDistrict.isSouth()){
-                        visibleAlibis.add(nextDistrict.getAlibi());
-                        district=nextDistrict;
-                    }
-                }
-            }
-        }
-        if(column==0){
-            if (((District)board[row][column+nextAlibi]).isWest()){
-                District district = (District)board[row][column+nextAlibi];
-                visibleAlibis.add(district.getAlibi());
-                while (district.isEast()&&nextAlibi<3){
-                    nextAlibi++;
-                    District nextDistrict=(District)board[row][column+nextAlibi];
-                    if (nextDistrict.isWest()){
-                        visibleAlibis.add(nextDistrict.getAlibi());
-                        district=nextDistrict;
-                    }
-                }
-            }
-        }else if(column==4){
-            if (((District)board[row][column-nextAlibi]).isEast()){
-                District district=(District)board[row][column-nextAlibi];
-                visibleAlibis.add(district.getAlibi());
-                while (district.isWest()&&nextAlibi<3){
-                    nextAlibi++;
-                    District nextDistrict=(District)board[row][column-nextAlibi];
-                    if(nextDistrict.isEast()){
-                        visibleAlibis.add(nextDistrict.getAlibi());
-                        district=nextDistrict;
-                    }
-                }
-            }
-        }return visibleAlibis;
-    }
+
 
     @Override
     public String toString(){
