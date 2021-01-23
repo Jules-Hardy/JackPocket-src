@@ -15,12 +15,15 @@ public class Game {
         List<District> districts = createDistrict();
         List<District> districtsAlibi = new ArrayList<>(districts);
         this.initialiseBoard(districts);
-
+        Scanner scanner = new Scanner( System.in );
+        System.out.println("Nous allons picher l'alibi de MrJack... L'enqueteur ne doit pas regarder !!!\nEntrez un retour à la ligne pour voir l'identité de MrJack");
+        scanner.nextLine();
         for (District district : districtsAlibi) {
             if (district.getAlibi().getMrJack())
                 System.out.println("MrJack a pioché l'alibi suivant : " + district.getAlibi().getName());
         }
-
+        System.out.println("Entrez un retour à la ligne pour voir le tableau de jeu et commencer à jouer...");
+        scanner.nextLine();
         if (this.visibleAlibis == null) this.visibleAlibis = new ArrayList<Alibi>();
         int nbTour = 1;
         Player winner = null;
@@ -28,9 +31,10 @@ public class Game {
         while (mrJack.getNbSablier() < 6) {
 
             this.visibleAlibis = this.getVisible();
-            displayVisibleAlibis();
-            printBoard();
 
+            printBoard();
+            System.out.print("Entrez pour continuer.");
+            scanner.nextLine();
             Player currentPlayer = null;
 
             // DEBUT DE TOUR ET CHOIX DES ACTIONS
@@ -81,6 +85,8 @@ public class Game {
             }
 
             displayVisibleAlibis();
+            System.out.print("Entrez pour continuer.");
+            scanner.nextLine();
 
             boolean isPresent = false;
             for(Alibi alibi: visibleAlibis) {
@@ -249,6 +255,7 @@ public class Game {
 
 
     private void printBoard(){
+        System.out.println("Tableau de jeu actuel :");
         for (int i=0;i<5;i++){
             for (int j=0;j<5;j++){
                 String carac = board[i][j].toString();
