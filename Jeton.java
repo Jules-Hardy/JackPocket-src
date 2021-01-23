@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.*;
 
 public class Jeton {
@@ -6,9 +7,7 @@ public class Jeton {
     private String verso;
     private int numero;
 
-    public static void main(String[] args) {}
-
-    public static List<String> tourJeton(){
+    static List<String> tourJeton(){
         List<Jeton> listJeton = new ArrayList<>();
         Jeton jeton1 = new Jeton(1,"Sherlock","Tirer carte alibi");
         Jeton jeton2 = new Jeton(2,"Tobby","Watson");
@@ -56,11 +55,18 @@ public class Jeton {
         return numero;
     }
 
-    public String getRecto(){
+    private String getRecto(){
         return recto;
     }
 
-    public String getVerso() {
+    private String getVerso() {
         return verso;
+    }
+
+    public static void toString(List<String> jetons){
+        System.out.println("Voici les jetons tirés : ");
+        for(int i =0; i<jetons.size();i++){
+            System.out.println("- "+i+" : "+jetons.get(i));
+        }
     }
 }

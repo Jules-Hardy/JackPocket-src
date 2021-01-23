@@ -1,14 +1,12 @@
-import java.util.ArrayList;
-import java.util.List;
-
-
 public class Detective extends Tile {
     private String name;
     private int row;
     private int column;
     private int pos;
+    private Detective deuxiemeDetective;
 
-    public Detective(String name, int pos){
+
+    Detective(String name, int pos){
         this.name=name;
         setPos(pos);
     }
@@ -17,7 +15,7 @@ public class Detective extends Tile {
 
     }
 
-    public void setPos(int n) {
+    void setPos(int n) {
         this.pos=n;
         if(n<=3){
             this.setColumn(n);
@@ -47,16 +45,20 @@ public class Detective extends Tile {
         return column;
     }
     public int getPos(){ return pos;}
+    public Detective getDeuxiemeDetective(){ return deuxiemeDetective;}
     public void setRow(int row){this.row = row; }
     public void setColumn(int column){this.column = column; }
-
-
+    public void setDeuxiemeDetective(Detective detective){this.deuxiemeDetective = detective; }
 
 
     @Override
     public String toString(){
-        return this.name;
+        if(deuxiemeDetective==null){
+            return this.name;
+        }
+        else {
+            return (this.name + " " + this.deuxiemeDetective.getName());
+        }
     }
-
 
 }
