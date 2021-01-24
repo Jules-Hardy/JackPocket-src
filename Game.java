@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.Arrays.*;
 
 class Game {
     private Tile[][] board;
@@ -50,41 +51,43 @@ class Game {
             if (nbTour % 2 == 1) { // Tour impaire : Enqueteur commence
                 System.out.println("L'enqueteur commence. Que voulez vous faire ?\n" + enqueteur.getName() + " -->");
                 currentPlayer = enqueteur;
-                String choice = choix(jetons, board, currentPlayer, detectives, districtsAlibi);
+                String choice = choix(jetons, currentPlayer, districtsAlibi);
                 jetons.remove(choice);
-                System.out.println("Voici les jetons restants : ");
+                Jeton.toString(jetons);
                 System.out.println("C'est au tour de Mr Jack. Que voulez vous faire ?\n" + mrJack.getName() + " -->");
                 currentPlayer = mrJack;
-                choice = choix(jetons, board, currentPlayer, detectives, districtsAlibi);
+                choice = choix(jetons, currentPlayer, districtsAlibi);
                 jetons.remove(choice);
-                System.out.println("Voici les jetons restants : " + jetons);
+                Jeton.toString(jetons);
                 System.out.println("C'est au tour de Mr Jack. Que voulez vous faire ?\n" + mrJack.getName() + " -->");
                 currentPlayer = mrJack;
-                choice = choix(jetons, board, currentPlayer, detectives, districtsAlibi);
+                choice = choix(jetons, currentPlayer, districtsAlibi);
                 jetons.remove(choice);
-                System.out.println("Voici les jetons restants : " + jetons);
+                Jeton.toString(jetons);
                 System.out.println("C'est au tour de l'inspecteur. Que voulez vous faire ?\n" + enqueteur.getName() + " -->");
                 currentPlayer = enqueteur;
-                choix(jetons, board, currentPlayer, detectives, districtsAlibi);
+                choice = choix(jetons, currentPlayer, districtsAlibi);
+                jetons.remove(choice);
             } else if (nbTour % 2 != 1) { // Tour paire : MrJack commence
                 System.out.println("MrJack commence. Que voulez vous faire ?\n" + mrJack.getName() + " -->");
                 currentPlayer = mrJack;
-                String choice = choix(jetons, board, currentPlayer, detectives, districtsAlibi);
+                String choice = choix(jetons, currentPlayer, districtsAlibi);
                 jetons.remove(choice);
-                System.out.println("Voici les jetons restants : " + jetons);
+                Jeton.toString(jetons);
                 System.out.println("C'est au tour de l'enquêteur. Que voulez vous faire ?\n" + enqueteur.getName() + " -->");
                 currentPlayer = enqueteur;
-                choice = choix(jetons, board, currentPlayer, detectives, districtsAlibi);
+                choice = choix(jetons, currentPlayer, districtsAlibi);
                 jetons.remove(choice);
-                System.out.println("Voici les jetons restants : " + jetons);
+                Jeton.toString(jetons);
                 System.out.println("C'est au tour de l'enquêteur. Que voulez vous faire ?\n" + enqueteur.getName() + " -->");
                 currentPlayer = enqueteur;
-                choice = choix(jetons, board, currentPlayer, detectives, districtsAlibi);
+                choice = choix(jetons, currentPlayer, districtsAlibi);
                 jetons.remove(choice);
-                System.out.println("Voici les jetons restants : " + jetons);
+                Jeton.toString(jetons);
                 System.out.println("C'est au tour de MrJack. Que voulez vous faire ?\n" + mrJack.getName() + " -->");
                 currentPlayer = mrJack;
-                choix(jetons, board, currentPlayer, detectives, districtsAlibi);
+                choice = choix(jetons, currentPlayer, districtsAlibi);
+                jetons.remove(choice);
             }
 
             displayVisibleAlibis();
@@ -242,7 +245,7 @@ class Game {
 
     private List<District> createDistrict() {
         List<District> districts = new ArrayList<>();
-        String[] names = {"Inspecteur Lestrade", "Miss Stealthy", "Jeremy Bert", "John Pizer", "Joseph Lane", "Madame", "Sergent Goodley", "William Gull", "Dernier perso"};
+        String[] names = {"Inspecteur Lestrade", "Miss Stealthy", "Jeremy Bert", "John Pizer", "Joseph Lane", "Madame", "Sergent Goodley", "William Gull", "John Smith"};
         Random rand = new Random();
         int randomNum = rand.nextInt(names.length);
         for (int i = 0; i < names.length; i++) {
@@ -281,7 +284,7 @@ class Game {
         }
     }
 
-    private String choix(List<String> jetons, Tile[][] board, Player currentPlayer, Detective[] detectives, List<District> districtsAlibi) {
+    private String choix(List<String> jetons, Player currentPlayer, List<District> districtsAlibi) {
         Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
         String c = jetons.get(choice);
@@ -403,7 +406,7 @@ class Game {
         if (pos == 14) {
             pos = 2;
         }
-        this.board[d.getRow()][d.getColumn()] = new EmptyTile();
+        //this.board[d.getRow()][d.getColumn()] = new EmptyTile();
         // On vérifie que le détective qu'on souhaite bouger ne possède pas un autre détective comme attribut
         for (Detective otherDetective : this.detectives) {
             if (otherDetective.getPos() == pos && d != otherDetective) {
@@ -413,26 +416,26 @@ class Game {
                 this.placeDetective(otherDetective, pos);
             }
 
-            // else if(otherDetective.getPos() == d.getPos() && d == otherDetective){
-            //      this.placeDetective(otherDetective.getDeuxiemeDetective(), d.getPos());
-            //      d.setDeuxiemeDetective(null);
-
-            //       d.setPos(pos);
-            //      this.placeDetective(d,pos);
-            //   }
-
-            else if (d.getRow() == otherDetective.getRow() && d.getColumn() == otherDetective.getColumn() && pos != otherDetective.getPos()) {
+            else if (d.getDeuxiemeDetective() != null) {
                 d.setPos(pos);
                 this.placeDetective(d, pos);
-                this.placeDetective(otherDetective, otherDetective.getPos());
+                this.placeDetective(d.getDeuxiemeDetective(), d.getDeuxiemeDetective().getPos());
+                d.setDeuxiemeDetective(null);
+            }
+
+            else if(otherDetective.getDeuxiemeDetective() == d){
+                d.setPos(pos);
+                this.placeDetective(d, pos);
                 otherDetective.setDeuxiemeDetective(null);
-            } else {
+                this.placeDetective(otherDetective,otherDetective.getPos());
+            }
+
+            else {
                 this.board[d.getRow()][d.getColumn()] = new EmptyTile();
                 d.setPos(pos);
                 this.placeDetective(d, pos);
             }
         }
-        System.out.println(Arrays.toString(detectives));
     }
 
 

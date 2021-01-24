@@ -1,7 +1,6 @@
 import java.util.*;
 
 public class Main {
-    static Deque<Alibi> alibis;
     public static void main(String[] args){
         Scanner scanner = new Scanner( System.in );
         int in = 1;
