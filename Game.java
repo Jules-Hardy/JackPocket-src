@@ -42,9 +42,6 @@ class Game {
             System.out.println("-------- Début du tour : " + nbTour + " --------\n" + "\tRésumé des scores : \n" + "- " + mrJack.getName() + " (mrJack) : " + mrJack.getNbSablier() + "\n- " + enqueteur.getName() + " (Enqueteur) : " + enqueteur.getNbSablier() + "\n");
             System.out.println("On lance les jetons...");
             List<String> jetons = Jeton.tourJeton();
-            jetons.add("Tobby");
-            jetons.add("Watson");
-            jetons.add("Sherlock");
 
             Jeton.toString(jetons);
 
@@ -163,8 +160,8 @@ class Game {
 
         Detective sherlock = new Detective("Sherlock", 12);
         placeDetective(sherlock, 12);
-        Detective tobby = new Detective("Tobby", 3);
-        placeDetective(tobby, 3);
+        Detective tobby = new Detective("Tobby", 8);
+        placeDetective(tobby, 8);
         Detective watson = new Detective("Watson", 4);
         placeDetective(watson, 4);
         this.detectives = new Detective[]{sherlock, tobby, watson};
@@ -367,7 +364,6 @@ class Game {
             case "Tirer carte alibi":
                 Random rand = new Random();
                 Alibi pickedAlibi;
-                System.out.println(districtsAlibi.size());
                 Alibi al;
                 do {
                     int randomNum = rand.nextInt(districtsAlibi.size());
@@ -385,7 +381,9 @@ class Game {
                     } else if (currentPlayer.getRole().equals("MrJack")) {
                         pickedAlibi = districtsAlibi.get(randomNum).getAlibi();
                         districtsAlibi.remove(randomNum);
-                        // Remove alibi du plateau ??
+                        System.out.println("Alibi pioché : " + al.toString());
+                        currentPlayer.addSablier(pickedAlibi.getHourglassCount());
+                        d.flip();
                     } else {
                         System.out.println("erreur");
                     }
