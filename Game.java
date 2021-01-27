@@ -7,11 +7,10 @@ class Game {
     private ArrayList<Alibi> visibleAlibis;
 
     // On initialise le plateau
-    public Player play() {
+    public Player play(List listJoueur) {
 
-        List<Player> listJoueur = Player.definePlayer();
-        Player mrJack = listJoueur.get(0);
-        Player enqueteur = listJoueur.get(1);
+        Player mrJack = (Player) listJoueur.get(0);
+        Player enqueteur = (Player) listJoueur.get(1);
 
         List<District> districts = createDistrict();
         List<District> districtsAlibi = new ArrayList<>(districts);
@@ -33,7 +32,7 @@ class Game {
 
             this.visibleAlibis = this.getVisible();
 
-            printBoard();
+            this.printBoard();
             System.out.print("Entrez pour continuer.");
             scanner.nextLine();
             Player currentPlayer = null;
@@ -87,7 +86,9 @@ class Game {
                 jetons.remove(choice);
             }
 
-            displayVisibleAlibis();
+            this.visibleAlibis = this.getVisible();
+            this.displayVisibleAlibis();
+
             System.out.print("Entrez pour continuer.");
             scanner.nextLine();
 
@@ -191,7 +192,7 @@ class Game {
                     District p = this.board[d.getRow()][i].getDistrict();
                     if (p.getOrientation() == 'E') {
                         break;
-                    } else {
+                    } else if (!p.getFlip()){
                         res.add(this.board[d.getRow()][i].getDistrict().getAlibi());
                         if (p.getOrientation() == 'W') {
                             break;
@@ -203,7 +204,7 @@ class Game {
                     District p = this.board[d.getRow()][j].getDistrict();
                     if (p.getOrientation() == 'W') {
                         break;
-                    } else {
+                    } else if (!p.getFlip()) {
                         res.add(this.board[d.getRow()][j].getDistrict().getAlibi());
                         if (p.getOrientation() == 'E') {
                             break;
@@ -215,7 +216,7 @@ class Game {
                     District p = this.board[i][d.getColumn()].getDistrict();
                     if (p.getOrientation() == 'N') {
                         break;
-                    } else {
+                    } else if (!p.getFlip()) {
                         res.add(this.board[i][d.getColumn()].getDistrict().getAlibi());
                         if (p.getOrientation() == 'S') {
                             break;
@@ -227,7 +228,7 @@ class Game {
                     District p = (District) this.board[j][d.getColumn()];
                     if (p.getOrientation() == 'S') {
                         break;
-                    } else {
+                    } else if (!p.getFlip()) {
                         res.add(this.board[j][d.getColumn()].getDistrict().getAlibi());
                         if (p.getOrientation() == 'N') {
                             break;
@@ -285,31 +286,35 @@ class Game {
         Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
         String c = jetons.get(choice);
+        System.out.println(Arrays.toString(this.detectives));
 
-        Detective sherlock = detectives[0];
-        Detective watson = detectives[2];
-        Detective tobby = detectives[1];
+        // sherlock = detectives[0];
+        // tobby = detectives[1];
+        // watson = detectives[2];
+
         switch (c) {
             case "Sherlock":
                 System.out.println("De combien de case voulez vous bouger Sherlock ? 1 ou 2 ?");
                 int input = scanner.nextInt();
-                this.board[sherlock.getColumn()][sherlock.getRow()] = new EmptyTile();
-                this.move(sherlock, input);
+                this.board[this.detectives[0].getColumn()][this.detectives[0].getRow()] = new EmptyTile();
+                this.move(this.detectives[0], input);
                 break;
+
 
             case "Tobby":
                 System.out.println("De combien de case voulez vous bouger Tobby ? 1 ou 2 ?");
                 input = scanner.nextInt();
-                this.board[tobby.getColumn()][tobby.getRow()] = new EmptyTile();
-                this.move(tobby, input);
+                this.board[this.detectives[1].getColumn()][this.detectives[1].getRow()] = new EmptyTile();
+                this.move(this.detectives[1], input);
                 break;
 
             case "Watson":
                 System.out.println("De combien de case voulez vous bouger Watson ? 1 ou 2 ?");
                 input = scanner.nextInt();
-                this.board[watson.getColumn()][watson.getRow()] = new EmptyTile();
-                this.move(watson, input);
+                this.board[this.detectives[2].getColumn()][this.detectives[2].getRow()] = new EmptyTile();
+                this.move(this.detectives[2], input);
                 break;
+
 
             case "Echanger district":
                 int i1, i2, y1, y2;
@@ -340,23 +345,23 @@ class Game {
                 System.out.println("Rotation de " + this.board[i][y].getDistrict().toString());
 
                 this.board[i][y].getDistrict().rotate(step);
+
                 break;
 
             case "Avancer un des détectives":
-                String ins;
-                System.out.println("Quel joueur voulez vous avancer de 1 case ?");
-                ins = scanner.nextLine();
-                System.out.println(ins);
-                if (ins.equals("Sherlock")) {
-                    this.move(sherlock, 1);
-                }
-                if (ins.equals("Tobby")) {
-                    this.move(tobby, 1);
-                }
-                if (ins.equals("Watson")) {
-                    this.move(watson, 1);
-                } else {
-                    System.out.println("erreur");
+                int ins;
+                System.out.println("Quel joueur voulez vous avancer de 1 case ? 1 : Sherlock, 2: Watson, 3: Tobby");
+                ins = scanner.nextInt();
+                switch (ins) {
+                    case 1:
+                        this.move(this.detectives[0], 1);
+                        break;
+                    case 2:
+                        this.move(this.detectives[1], 1);
+                        break;
+                    case 3:
+                        this.move(this.detectives[2], 1);
+                        break;
                 }
                 break;
 
@@ -376,23 +381,21 @@ class Game {
                         districtsAlibi.remove(randomNum);
                         currentPlayer.addSablier(al.getHourglassCount());
                         System.out.println("Alibi pioché : " + al.toString());
-                        d.flip();
+                        if(!d.getFlip())
+                            d.flip();
                         break;
                     } else if (currentPlayer.getRole().equals("MrJack")) {
                         pickedAlibi = districtsAlibi.get(randomNum).getAlibi();
                         districtsAlibi.remove(randomNum);
                         System.out.println("Alibi pioché : " + al.toString());
                         currentPlayer.addSablier(pickedAlibi.getHourglassCount());
-                        d.flip();
                     } else {
                         System.out.println("erreur");
                     }
                 } while (al.getMrJack());
                 break;
         }
-        this.visibleAlibis = this.getVisible();
-        printBoard();
-
+        this.printBoard();
         return c;
     }
 
